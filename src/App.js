@@ -1,25 +1,39 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
+import React from "react";
 import './App.css';
+import ExterC from './componets/ExterC';
+import Pokedex from "./componets/Pokeguardo";
+import Searcbar from "./componets/Searcbar";
+import { getPokemons } from "./componets/api";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const {useState, useEffect} = React;
+
+export default function App(){
+	const [pokemons, setPokemons] = useState([])
+
+	const fetchPokemons = async () => {
+		try{
+			const data = await getPokemons();
+			setPokemons(data.results);
+			// console.log(data);
+		} catch(err){
+
+		}
+	}
+	useEffect(() => {
+		fetchPokemons ();
+		return () => {
+			
+		}
+	}, [])
+
+	return(
+		<div>
+			<ExterC />
+		<div className= "App">
+			<Searcbar/>
+			<Pokedex pokemons={pokemons} />
+		</div>
+		</div>
+	)
 }
-
-export default App;
